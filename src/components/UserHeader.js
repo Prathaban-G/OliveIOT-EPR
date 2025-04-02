@@ -134,7 +134,7 @@ function ResponsiveHeader() {
               />
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 border border-gray-200 hidden group-hover:block">
                 <div className="py-1">
-                  <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Prathab</a>
+                  <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">User</a>
                   <a
                     href="#logout"
                     onClick={handleLogout}
