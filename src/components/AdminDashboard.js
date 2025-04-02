@@ -143,17 +143,17 @@ const AdminDashboard = () => {
         className="bg-white shadow-sm flex justify-between items-center p-4 sticky top-0 z-10"
       >
         <div className="flex items-center space-x-2">
+         
+          <div>
           <motion.img
-            src="/Assets/olivelogoo.png"
+            src="/Assets/olivee.png"
             alt="EcoInfinity Logo"
-            className="h-10"
+            className="h-8 ps-1"
             initial={{ rotate: -180, scale: 0 }}
-            animate={{ rotate: 0, scale: 1 }}
+            animate={{ rotate: 0, scale: 2 }}
             transition={{ duration: 0.8, type: "spring" }}
           />
-          <div>
-            <h1 className="text-xl font-bold text-teal-700">Olive IoT</h1>
-            <div className="text-xs text-gray-500">INDUSTRIAL DATA LOGGER</div>
+            <div className="text-xs text-gray-500">Intelligent bio-manufacturing and energy analytics</div>
           </div>
         </div>
         <div className="flex items-center space-x-6">

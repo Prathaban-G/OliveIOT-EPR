@@ -374,11 +374,11 @@ const LoginAlt = ({ onLogin }) => {
         <div className="login-alt-header">
           <div className="login-alt-logo">
             <div className="logo-badge">
-              <Shield size={22} />
+              <Shield size={22} color='white'/>
             </div>
-            <h1>Olive<span>IOT</span></h1>
+            <h1>Olive<span>IoT</span></h1>
           </div>
-          <h2>Enterprise Resource Planning</h2>
+          <h5>Intelligent bio-manufacturing and energy analytics</h5>
           <p>Sign in to your account to access the dashboard</p>
         </div>
 

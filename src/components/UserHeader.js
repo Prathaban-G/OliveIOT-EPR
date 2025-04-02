@@ -42,14 +42,14 @@ function ResponsiveHeader() {
       />
 
       <div className="flex items-center space-x-4">
-        <WifiIcon 
-          size={20} 
-          className="text-green-500 animate-pulse" 
+        <WifiIcon
+          size={20}
+          className="text-green-500 animate-pulse"
           title="Online Status"
         />
-        <ServerIcon 
-          size={20} 
-          className="text-blue-500 animate-spin-slow" 
+        <ServerIcon
+          size={20}
+          className="text-blue-500 animate-spin-slow"
           title="Machine Status"
         />
         <motion.img
@@ -74,44 +74,44 @@ function ResponsiveHeader() {
     >
       <div className="w-full flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <motion.img
-            src="/Assets/olivelogoo.png"
-            alt="EcoInfinity Logo"
-            className="h-10"
-            initial={{ rotate: -180, scale: 0 }}
-            animate={{ rotate: 0, scale: 1 }}
-            transition={{ duration: 0.8, type: "spring" }}
-          />
+
           <div>
-            <h1 className="text-xl font-bold text-teal-700">Olive IoT</h1>
-            <div className="text-xs text-gray-500">INDUSTRIAL DATA LOGGER</div>
+            <motion.img
+              src="/Assets/olivee.png"
+              alt="EcoInfinity Logo"
+              className="h-8 ps-1"
+              initial={{ rotate: -180, scale: 0 }}
+              animate={{ rotate: 0, scale: 2 }}
+              transition={{ duration: 0.8, type: "spring" }}
+            />
+            <div className="text-xs text-gray-500">Intelligent bio-manufacturing and energy analytics</div>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-6">
           {/* Status Indicators */}
           <div className="flex items-center space-x-4">
-            <motion.div 
+            <motion.div
               className="flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <WifiIcon 
-                size={20} 
-                className="text-green-500 animate-pulse" 
+              <WifiIcon
+                size={20}
+                className="text-green-500 animate-pulse"
                 title="Online Status"
               />
               <span className="text-sm font-medium text-green-600">Online</span>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="flex items-center space-x-2"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <ServerIcon 
-                size={20} 
-                className="text-blue-500 animate-spin-slow" 
+              <ServerIcon
+                size={20}
+                className="text-blue-500 animate-spin-slow"
                 title="Machine Status"
               />
               <span className="text-sm font-medium text-blue-600">Running</span>
