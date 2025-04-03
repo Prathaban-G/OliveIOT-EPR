@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import ReactApexChart from 'react-apexcharts';
+
+
 import { 
   FileSpreadsheet, 
   File, 
@@ -10,8 +13,273 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { format } from 'date-fns';
+const ChartView = () => {
+  const [historyData, setHistoryData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-const SReport = () => {
+  useEffect(() => {
+    fetchChartData();
+  }, []);
+
+  const fetchChartData = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      const mockData = [
+        { time: '05:00 - 06:00', rawBioGas: 0, cbgCascades: 0 },
+        { time: '06:00 - 07:00', rawBioGas: 50.5, cbgCascades: 177.60 },
+        { time: '07:00 - 08:00', rawBioGas: 75.2, cbgCascades: 175.48 },
+        { time: '08:00 - 09:00', rawBioGas: 120.3, cbgCascades: 220.15 },
+        { time: '09:00 - 10:00', rawBioGas: 180.6, cbgCascades: 265.72 },
+        { time: '10:00 - 11:00', rawBioGas: 210.4, cbgCascades: 300.55 }
+      ];
+      
+      setHistoryData(mockData);
+      setIsLoading(false);
+    }, 500);
+  };
+
+  // Chart configuration for Raw Bio-Gas
+  const rawBioGasChartOptions = {
+    series: [{
+      name: 'Raw Bio-Gas',
+      data: historyData.map(item => item.rawBioGas)
+    }],
+    options: {
+      chart: {
+        type: 'bar',
+        height: 350,
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+            enabled: true,
+            delay: 150
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350
+          }
+        }
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: false,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: historyData.map(item => item.time.split(' - ')[0]),
+        title: {
+          text: 'Time (Hourly)'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Raw Bio-Gas (m³/hr)'
+        }
+      },
+      title: {
+        text: 'Hourly Raw Bio-Gas Production',
+        align: 'left',
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold'
+        }
+      },
+      fill: {
+        colors: ['#3B82F6']
+      },
+      tooltip: {
+        theme: 'light'
+      }
+    }
+  };
+
+  // Chart configuration for CBG Cascades
+  const cbgCascadesChartOptions = {
+    series: [{
+      name: 'CBG Cascades',
+      data: historyData.map(item => item.cbgCascades)
+    }],
+    options: {
+      chart: {
+        type: 'area',
+        height: 350,
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+            enabled: true,
+            delay: 150
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      xaxis: {
+        categories: historyData.map(item => item.time.split(' - ')[0]),
+        title: {
+          text: 'Time (Hourly)'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'CBG Cascades (kg/hr)'
+        }
+      },
+      title: {
+        text: 'Hourly CBG Filled to Cascades',
+        align: 'left',
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold'
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.9,
+          stops: [0, 100]
+        }
+      },
+      tooltip: {
+        theme: 'light'
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-lg shadow-md p-6 h-96 overflow-y-auto"
+    >
+      {isLoading ? (
+        <div className="h-full flex items-center justify-center">
+          <p className="text-gray-500">Loading chart data...</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="h-80">
+            <ReactApexChart
+              options={rawBioGasChartOptions.options}
+              series={rawBioGasChartOptions.series}
+              type="bar"
+              height="100%"
+            />
+          </div>
+          
+          <div className="h-80">
+            <ReactApexChart
+              options={cbgCascadesChartOptions.options}
+              series={cbgCascadesChartOptions.series}
+              type="area"
+              height="100%"
+            />
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+// Summary Component
+const SummaryView = () => {
+  const [summaryData, setSummaryData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate fetching summary data
+    setIsLoading(true);
+    setTimeout(() => {
+      const data = {
+        totalRawBioGas: 637.0,
+        totalCbgCascades: 1139.5,
+        efficiency: 87.5,
+        peakHour: '10:00 - 11:00',
+        trend: 'increasing'
+      };
+      setSummaryData(data);
+      setIsLoading(false);
+    }, 700);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-lg shadow-md p-6  overflow-y-auto"
+    >
+      {isLoading ? (
+        <div className="h-full flex items-center justify-center">
+          <p className="text-gray-500">Loading summary data...</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-gray-800">Production Summary</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">Total Raw Bio-Gas</h3>
+              <p className="text-2xl font-bold text-blue-600">{summaryData.totalRawBioGas} m³</p>
+              <p className="text-sm text-gray-600 mt-1">Daily production volume</p>
+            </div>
+            
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">Total CBG Cascades</h3>
+              <p className="text-2xl font-bold text-green-600">{summaryData.totalCbgCascades} kg</p>
+              <p className="text-sm text-gray-600 mt-1">Total compressed output</p>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-gray-500">Production Analysis</h3>
+            <ul className="mt-2 space-y-2">
+              <li className="flex items-center">
+                <span className="w-32 text-gray-600">Efficiency:</span>
+                <span className="font-medium">{summaryData.efficiency}%</span>
+              </li>
+              <li className="flex items-center">
+                <span className="w-32 text-gray-600">Peak Hour:</span>
+                <span className="font-medium">{summaryData.peakHour}</span>
+              </li>
+              <li className="flex items-center">
+                <span className="w-32 text-gray-600">Trend:</span>
+                <span className="font-medium capitalize">{summaryData.trend}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div className="p-4 border border-amber-200 bg-amber-50 rounded-lg">
+            <h3 className="text-sm font-medium text-amber-700">Insights</h3>
+            <p className="mt-1 text-gray-600">
+              Production efficiency has been consistently above target with a steady increase throughout the day. 
+              The peak production hour generated 210.4 m³ of raw biogas, which was converted to 300.55 kg of CBG.
+              Continue monitoring system performance to maintain optimal conversion rates.
+            </p>
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+const ReportSection = ({ onBackToDashboard }) => {
   const [activeView, setActiveView] = useState('table');
   const [selectedDevice, setSelectedDevice] = useState('');
   const [dateRange, setDateRange] = useState({
@@ -165,9 +433,9 @@ const SReport = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg shadow-md p-6 h-96 flex items-center justify-center"
+            className=""
           >
-            <p className="text-gray-500">Chart View Placeholder</p>
+            <ChartView />
           </motion.div>
         );
       case 'summary':
@@ -175,9 +443,9 @@ const SReport = () => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg shadow-md p-6 h-96 flex items-center justify-center"
+            className=""
           >
-            <p className="text-gray-500">Summary View Placeholder</p>
+             <SummaryView />
           </motion.div>
         );
       default:
@@ -186,7 +454,6 @@ const SReport = () => {
   };
 
   return (
-    
     <div className='min-h-screen p-6'>
     <motion.div 
       initial={{ opacity: 0 }}
@@ -201,7 +468,7 @@ const SReport = () => {
           transition={{ duration: 0.5 }}
           className="flex items-center space-x-3"
         >
-         
+        
           <h2 className="text-2xl font-bold text-gray-800">
             Reports & Analytics
           </h2>
@@ -294,4 +561,4 @@ const SReport = () => {
   );
 };
 
-export default SReport;
+export default ReportSection;
